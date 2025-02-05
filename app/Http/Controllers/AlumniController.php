@@ -2,79 +2,80 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Alumnus;
+use App\Models\Alumni;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class AlumniController extends Controller
 {
-    // GET /api/alumni?search=John&graduation_year=2020
-    public function index(Request $request)
+    /**
+     * Display a listing of the alumni.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index(): JsonResponse
     {
-        $query = Alumni::query();
-
-        // Filter by graduation year
-        if ($request->has('graduation_year')) {
-            $query->where('graduation_year', $request->graduation_year);
-        }
-
-        // Search by name
-        if ($request->has('name')) {
-            $searchTerm = $request->name;
-            $query->where(function($q) use ($searchTerm) {
-                $q->where('name->en', 'ILIKE', "%{$searchTerm}%")
-                  ->orWhere('name->kk', 'ILIKE', "%{$searchTerm}%")
-                  ->orWhere('name->ru', 'ILIKE', "%{$searchTerm}%");
-            });
-        }
-
-        return $query->paginate(10);
+        $alumnis = Alumni::all(); // For now, get all. We'll add pagination and filtering later.
+        return response()->json(['alumnis' => $alumnis]);
     }
 
-    public function store(Request $request)
+    /**
+     * Store a newly created alumni in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(Request $request): JsonResponse
     {
-        $validated = $request->validate([
-            'name'      => 'required|string',
-            'email'           => 'required|email|unique:alumni,email',
-            'graduation_year' => 'required|integer'
+        $request->validate([ // Basic validation, expand as needed
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:alumnis',
+            // Add validations for other fields
         ]);
 
-        $alumnus = Alumnus::create($validated);
-
-        return response()->json([
-            'message' => __('messages.created'),
-            'data'    => $alumnus
-        ], 201);
+        $alumni = Alumni::create($request->all());
+        return response()->json(['alumni' => $alumni, 'message' => 'Alumni created successfully'], 201); // 201 Created status
     }
 
-    public function show($id)
+    /**
+     * Display the specified alumni.
+     *
+     * @param  \App\Models\Alumni  $alumni
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(Alumni $alumni): JsonResponse
     {
-        $alumnus = Alumnus::findOrFail($id);
-        return response()->json($alumnus);
+        return response()->json(['alumni' => $alumni]);
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update the specified alumni in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Alumni  $alumni
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, Alumni $alumni): JsonResponse
     {
-        $alumnus = Alumnus::findOrFail($id);
-
-        $validated = $request->validate([
-            'name'      => 'sometimes|required|string',
-            'email'           => 'sometimes|required|email|unique:alumni,email,' . $alumnus->id,
-            'graduation_year' => 'sometimes|required|integer'
+        $request->validate([ // Validation for updates, adjust as needed
+            'name' => 'string|max:255',
+            'email' => 'email|unique:alumnis,email,' . $alumni->id, // Ignore current email
+            // Add validations for other fields
         ]);
 
-        $alumnus->update($validated);
-
-        return response()->json([
-            'message' => __('messages.updated'),
-            'data'    => $alumnus
-        ]);
+        $alumni->update($request->all());
+        return response()->json(['alumni' => $alumni, 'message' => 'Alumni updated successfully']);
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified alumni from storage.
+     *
+     * @param  \App\Models\Alumni  $alumni
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(Alumni $alumni): JsonResponse
     {
-        $alumnus = Alumnus::findOrFail($id);
-        $alumnus->delete();
-
-        return response()->json(['message' => __('messages.deleted')]);
+        $alumni->delete();
+        return response()->json(['message' => 'Alumni deleted successfully']);
     }
 }
