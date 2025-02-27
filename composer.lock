@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "48295066f7f422538804d1e51a7c9394",
+    "content-hash": "f07aa87191700b5277fff0670b4d15db",
     "packages": [
         {
             "name": "brick/math",
@@ -1344,6 +1344,86 @@
                 "source": "https://github.com/laravel/framework"
             },
             "time": "2025-01-30T13:25:22+00:00"
+        },
+        {
+            "name": "laravel/horizon",
+            "version": "v5.30.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/horizon.git",
+                "reference": "7b9ee870bf0e425b956fd0433f616f98fe951f72"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/horizon/zipball/7b9ee870bf0e425b956fd0433f616f98fe951f72",
+                "reference": "7b9ee870bf0e425b956fd0433f616f98fe951f72",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-pcntl": "*",
+                "ext-posix": "*",
+                "illuminate/contracts": "^9.21|^10.0|^11.0|^12.0",
+                "illuminate/queue": "^9.21|^10.0|^11.0|^12.0",
+                "illuminate/support": "^9.21|^10.0|^11.0|^12.0",
+                "nesbot/carbon": "^2.17|^3.0",
+                "php": "^8.0",
+                "ramsey/uuid": "^4.0",
+                "symfony/console": "^6.0|^7.0",
+                "symfony/error-handler": "^6.0|^7.0",
+                "symfony/polyfill-php83": "^1.28",
+                "symfony/process": "^6.0|^7.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.0|^10.4|^11.5",
+                "predis/predis": "^1.1|^2.0"
+            },
+            "suggest": {
+                "ext-redis": "Required to use the Redis PHP driver.",
+                "predis/predis": "Required when not using the Redis PHP driver (^1.1|^2.0)."
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Horizon": "Laravel\\Horizon\\Horizon"
+                    },
+                    "providers": [
+                        "Laravel\\Horizon\\HorizonServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-master": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Horizon\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Dashboard and code-driven configuration for Laravel queues.",
+            "keywords": [
+                "laravel",
+                "queue"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/horizon/issues",
+                "source": "https://github.com/laravel/horizon/tree/v5.30.3"
+            },
+            "time": "2025-02-11T13:52:50+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -3608,16 +3688,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "6.12.0",
+            "version": "6.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "420ea2a49db480302813d444834baaf7c8674782"
+                "reference": "86074fcfd127f9fa7bcdf550b7c938e3beb0d65f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/420ea2a49db480302813d444834baaf7c8674782",
-                "reference": "420ea2a49db480302813d444834baaf7c8674782",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/86074fcfd127f9fa7bcdf550b7c938e3beb0d65f",
+                "reference": "86074fcfd127f9fa7bcdf550b7c938e3beb0d65f",
                 "shasum": ""
             },
             "require": {
@@ -3679,7 +3759,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-permission/issues",
-                "source": "https://github.com/spatie/laravel-permission/tree/6.12.0"
+                "source": "https://github.com/spatie/laravel-permission/tree/6.15.0"
             },
             "funding": [
                 {
@@ -3687,33 +3767,33 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-31T01:07:40+00:00"
+            "time": "2025-02-17T19:18:01+00:00"
         },
         {
             "name": "spatie/laravel-translatable",
-            "version": "6.10.2",
+            "version": "6.11.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-translatable.git",
-                "reference": "6150f6d55f4712279883d56490406f8a92a9c72a"
+                "reference": "032d85b28de315310dab2048b857016f1194f68b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/6150f6d55f4712279883d56490406f8a92a9c72a",
-                "reference": "6150f6d55f4712279883d56490406f8a92a9c72a",
+                "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/032d85b28de315310dab2048b857016f1194f68b",
+                "reference": "032d85b28de315310dab2048b857016f1194f68b",
                 "shasum": ""
             },
             "require": {
-                "illuminate/database": "^9.0|^10.0|^11.0",
-                "illuminate/support": "^9.0|^10.0|^11.0",
+                "illuminate/database": "^10.0|^11.0|^12.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
                 "php": "^8.0",
                 "spatie/laravel-package-tools": "^1.11"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.64",
                 "mockery/mockery": "^1.4",
-                "orchestra/testbench": "^7.0|^8.0|^9.0",
-                "pestphp/pest": "^1.20|^2.0"
+                "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0",
+                "pestphp/pest": "^1.20|^2.0|^3.0"
             },
             "type": "library",
             "extra": {
@@ -3762,7 +3842,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-translatable/issues",
-                "source": "https://github.com/spatie/laravel-translatable/tree/6.10.2"
+                "source": "https://github.com/spatie/laravel-translatable/tree/6.11.4"
             },
             "funding": [
                 {
@@ -3770,7 +3850,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-03T08:49:09+00:00"
+            "time": "2025-02-20T15:51:22+00:00"
         },
         {
             "name": "symfony/clock",

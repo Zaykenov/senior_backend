@@ -1,47 +1,58 @@
-version: '3'
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: alumni-api
+    image: alumni-management-app
+    container_name: alumni-app
     restart: unless-stopped
-    working_dir: /var/www/html
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
     volumes:
-      - ./:/var/www/html
+      - ./:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
-      - alumni-network
+      - app-network
+    depends_on:
+      - pgsql
+
+  pgsql:
+    image: postgres:16-alpine
+    container_name: alumni-pgsql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: pgsql
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
 
   nginx:
     image: nginx:alpine
     container_name: alumni-nginx
     restart: unless-stopped
+    tty: true
     ports:
-      - "8000:80"
+      - "80:80"
     volumes:
-      - ./:/var/www/html
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
     networks:
-      - alumni-network
-
-  db:
-    image: postgres:16-alpine
-    container_name: alumni-db
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    networks:
-      - alumni-network
+      - app-network
 
 networks:
-  alumni-network:
+  app-network:
     driver: bridge
 
 volumes:
-  pgdata:
+  postgres-data:
