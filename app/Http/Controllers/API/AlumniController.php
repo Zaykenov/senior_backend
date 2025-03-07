@@ -12,20 +12,13 @@ use App\Models\EducationHistory;
 use App\Models\WorkExperience;
 use App\Models\Achievement;
 use Illuminate\Http\Request;
+use Illuminate\Http\Middleware\Authorize;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class AlumniController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:alumni:list')->only('index');
-        $this->middleware('permission:alumni:view')->only('show');
-        $this->middleware('permission:alumni:create')->only('store');
-        $this->middleware('permission:alumni:edit')->only('update');
-        $this->middleware('permission:alumni:delete')->only('destroy');
-    }
-
+    #[Authorize('permission:alumni:list')]
     public function index(Request $request)
     {
         $query = Alumni::query();
@@ -68,6 +61,7 @@ class AlumniController extends Controller
         return AlumniResource::collection($alumni);
     }
 
+    #[Authorize('permission:alumni:create')]
     public function store(StoreAlumniRequest $request)
     {
         try {
@@ -104,11 +98,13 @@ class AlumniController extends Controller
         }
     }
 
+    #[Authorize('permission:alumni:view')]
     public function show(Alumni $alumni)
     {
         return new AlumniResource($alumni);
     }
 
+    #[Authorize('permission:alumni:edit')]
     public function update(UpdateAlumniRequest $request, Alumni $alumni)
     {
         try {
@@ -152,6 +148,7 @@ class AlumniController extends Controller
         }
     }
 
+    #[Authorize('permission:alumni:delete')]
     public function destroy(Request $request, Alumni $alumni)
     {
         try {

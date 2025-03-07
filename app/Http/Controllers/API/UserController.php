@@ -5,23 +5,16 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Middleware\Authorize;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:users:list')->only('index');
-        $this->middleware('permission:users:view')->only('show');
-        $this->middleware('permission:users:create')->only('store');
-        $this->middleware('permission:users:edit')->only('update');
-        $this->middleware('permission:users:delete')->only('destroy');
-    }
-
     /**
      * Display a listing of the users.
      */
+    #[Authorize('permission:users:list')]
     public function index(Request $request)
     {
         $query = User::query();
@@ -47,6 +40,7 @@ class UserController extends Controller
     /**
      * Store a newly created user.
      */
+    #[Authorize('permission:users:create')]
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -75,6 +69,7 @@ class UserController extends Controller
     /**
      * Display the specified user.
      */
+    #[Authorize('permission:users:view')]
     public function show(User $user)
     {
         return response()->json($user->load('roles'));
@@ -83,6 +78,7 @@ class UserController extends Controller
     /**
      * Update the specified user.
      */
+    #[Authorize('permission:users:edit')]
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
@@ -126,6 +122,7 @@ class UserController extends Controller
     /**
      * Remove the specified user.
      */
+    #[Authorize('permission:users:delete')]
     public function destroy(User $user)
     {
         // Prevent deleting self

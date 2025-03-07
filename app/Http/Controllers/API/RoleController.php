@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Middleware\Authorize;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
@@ -11,18 +12,10 @@ use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:role:list')->only('index');
-        $this->middleware('permission:role:view')->only('show');
-        $this->middleware('permission:role:create')->only('store');
-        $this->middleware('permission:role:edit')->only('update');
-        $this->middleware('permission:role:delete')->only('destroy');
-    }
-
     /**
      * Display a listing of roles.
      */
+    #[Authorize('permission:role:list')]
     public function index(Request $request)
     {
         $query = Role::query();
@@ -45,6 +38,7 @@ class RoleController extends Controller
     /**
      * Store a newly created role.
      */
+    #[Authorize('permission:role:create')]
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -76,6 +70,7 @@ class RoleController extends Controller
     /**
      * Display the specified role.
      */
+    #[Authorize('permission:role:view')]
     public function show(Role $role)
     {
         return response()->json($role->load('permissions'));
@@ -84,6 +79,7 @@ class RoleController extends Controller
     /**
      * Update the specified role.
      */
+    #[Authorize('permission:role:edit')]
     public function update(Request $request, Role $role)
     {
         $validated = $request->validate([
@@ -131,6 +127,7 @@ class RoleController extends Controller
     /**
      * Remove the specified role.
      */
+    #[Authorize('permission:role:delete')]
     public function destroy(Role $role)
     {
         // Prevent deletion of essential roles

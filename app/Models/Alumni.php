@@ -11,6 +11,8 @@ class Alumni extends Model
 {
     use HasFactory, SoftDeletes, HasTranslations;
 
+    protected $table = 'alumni';
+
     protected $fillable = [
         'first_name',
         'last_name',
