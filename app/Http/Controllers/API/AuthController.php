@@ -63,7 +63,15 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        if ($request->user()) {
+            // Revoke the token that was used to authenticate this request
+            if ($request->bearerToken()) {
+                $request->user()->tokens()->where('id', $request->user()->currentAccessToken()->id)->delete();
+            } else {
+                // If no bearer token, revoke all tokens
+                $request->user()->tokens()->delete();
+            }
+        }
         
         return response()->json([
             'message' => 'Logged out successfully'

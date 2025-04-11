@@ -99,8 +99,9 @@ class AlumniController extends Controller
     }
 
     #[Authorize('permission:alumni:view')]
-    public function show(Alumni $alumni)
-    {
+    public function show($id)
+    {   
+        $alumni = Alumni::findOrFail($id);
         return new AlumniResource($alumni);
     }
 
