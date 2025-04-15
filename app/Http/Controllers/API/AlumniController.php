@@ -106,8 +106,9 @@ class AlumniController extends Controller
     }
 
     #[Authorize('permission:alumni:edit')]
-    public function update(UpdateAlumniRequest $request, Alumni $alumni)
+    public function update(UpdateAlumniRequest $request, $id)
     {
+        $alumni = Alumni::findOrFail($id);
         try {
             DB::beginTransaction();
             
@@ -150,8 +151,9 @@ class AlumniController extends Controller
     }
 
     #[Authorize('permission:alumni:delete')]
-    public function destroy(Request $request, Alumni $alumni)
+    public function destroy(Request $request, $id)
     {
+        $alumni = Alumni::findOrFail($id);
         try {
             $oldValues = $alumni->toArray();
             
