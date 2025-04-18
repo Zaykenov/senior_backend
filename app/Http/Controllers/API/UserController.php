@@ -135,7 +135,7 @@ class UserController extends Controller
             ], 403);
         }
         
-        $user->delete();
+        $user->forceDelete();
         
         return response()->json([
             'message' => 'User deleted successfully'

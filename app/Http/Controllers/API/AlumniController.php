@@ -174,7 +174,7 @@ class AlumniController extends Controller
             ]);
             
             // Soft delete the alumni record
-            $alumni->delete();
+            $alumni->forceDelete();
             
             return response()->json(['message' => 'Alumni record deleted successfully']);
         } catch (\Exception $e) {
