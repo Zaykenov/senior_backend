@@ -9,7 +9,7 @@ class UpdateAlumniRequest extends FormRequest
 {
     public function authorize()
     {
-        return $this->user()->can('alumni:update');
+        return $this->user()->can('alumni:edit');
     }
 
     public function rules()
