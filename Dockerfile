@@ -18,6 +18,15 @@ RUN apt-get update && apt-get install -y \
     curl \
     libpq-dev
 
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+ && apt-get update \
+ && apt-get install -y nodejs \
+ # now npm@latest (v11) is compatible
+ && npm install -g npm@latest
+
+RUN apt-get update \
+ && apt-get install -y libpq-dev libzip-dev libicu-dev \
+ && docker-php-ext-install pcntl pdo_pgsql zip intl
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 

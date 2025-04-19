@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\AlumniController;
+use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\SystemController;
@@ -25,6 +26,10 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Role management routes (admin only)
     Route::apiResource('roles', RoleController::class);
+    
+    // Chat routes
+    Route::get('/chat/rooms/{roomId}/messages', [ChatController::class, 'index']);
+    Route::post('/chat/messages', [ChatController::class, 'store']);
     
     // System routes
     Route::prefix('system')->group(function () {
