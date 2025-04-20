@@ -75,7 +75,16 @@ class AlumniController extends Controller
                 $data['profile_photo'] = $path;
             }
             
-            // Create alumni record
+            // Create linked user
+            $user = \App\Models\User::create([
+                'name' => $data['first_name'] . ' ' . $data['last_name'],
+                'email' => $data['email'],
+                'password' => \Illuminate\Support\Facades\Hash::make($data['password']),
+            ]);
+            $user->assignRole('alumni');
+            
+            // Create alumni record and link to user
+            $data['user_id'] = $user->id;
             $alumni = Alumni::create($data);
             
             // Log activity
@@ -128,6 +137,23 @@ class AlumniController extends Controller
             
             // Update alumni record
             $alumni->update($data);
+            
+            // Sync changes to linked user
+            if ($alumni->user) {
+                $userData = [];
+                if (isset($data['first_name']) || isset($data['last_name'])) {
+                    $userData['name'] = ($data['first_name'] ?? $alumni->first_name) . ' ' . ($data['last_name'] ?? $alumni->last_name);
+                }
+                if (isset($data['email'])) {
+                    $userData['email'] = $data['email'];
+                }
+                if (isset($data['password']) && $data['password']) {
+                    $userData['password'] = \Illuminate\Support\Facades\Hash::make($data['password']);
+                }
+                if (!empty($userData)) {
+                    $alumni->user->update($userData);
+                }
+            }
             
             // Log activity
             ActivityLog::create([

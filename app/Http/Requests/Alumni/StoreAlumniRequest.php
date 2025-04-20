@@ -29,6 +29,7 @@ class StoreAlumniRequest extends FormRequest
             'profile_photo' => 'nullable|image|max:2048',
             'country' => 'nullable|string|max:100',
             'city' => 'nullable|string|max:100',
+            'password' => 'required|string|min:8|confirmed',
         ];
     }
 }

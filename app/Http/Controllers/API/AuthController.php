@@ -80,10 +80,20 @@ class AuthController extends Controller
 
     public function profile(Request $request)
     {
+        $user = $request->user();
+        $roles = $user->getRoleNames();
+        $permissions = $user->getAllPermissions()->pluck('name');
+
+        $alumniProfile = null;
+        if ($roles->contains('alumni')) {
+            $alumniProfile = \App\Models\Alumni::where('user_id', $user->id)->first();
+        }
+
         return response()->json([
-            'user' => $request->user(),
-            'roles' => $request->user()->getRoleNames(),
-            'permissions' => $request->user()->getAllPermissions()->pluck('name'),
+            'user' => $user,
+            'roles' => $roles,
+            'permissions' => $permissions,
+            'alumni_profile' => $alumniProfile,
         ]);
     }
 }

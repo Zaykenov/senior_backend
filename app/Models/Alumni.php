@@ -29,6 +29,7 @@ class Alumni extends Model
         'profile_photo',
         'country',
         'city',
+        'user_id',
     ];
 
     protected $casts = [
@@ -46,5 +47,10 @@ class Alumni extends Model
     public function getFullNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('profile_photo')->nullable();
             $table->string('country')->nullable();
             $table->string('city')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
             $table->softDeletes(); // For soft deletion
         });

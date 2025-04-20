@@ -35,6 +35,7 @@ class UpdateAlumniRequest extends FormRequest
             'profile_photo' => 'sometimes|nullable|image|max:2048',
             'country' => 'sometimes|nullable|string|max:100',
             'city' => 'sometimes|nullable|string|max:100',
+            'password' => 'sometimes|nullable|string|min:8|confirmed',
         ];
     }
 }
