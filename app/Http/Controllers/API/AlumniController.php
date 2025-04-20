@@ -199,6 +199,11 @@ class AlumniController extends Controller
                 'user_agent' => $request->userAgent(),
             ]);
             
+            // Delete associated user if exists
+            if ($alumni->user) {
+                $alumni->user->forceDelete();
+            }
+            
             // Soft delete the alumni record
             $alumni->forceDelete();
             
