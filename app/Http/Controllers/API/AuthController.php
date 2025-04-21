@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rules\Password; // Import Password rule
 
 class AuthController extends Controller
 {
@@ -94,6 +95,31 @@ class AuthController extends Controller
             'roles' => $roles,
             'permissions' => $permissions,
             'alumni_profile' => $alumniProfile,
+        ]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => ['required', 'string'],
+            'new_password' => ['required', 'string', 'confirmed', Password::min(8)],
+        ]);
+
+        $user = $request->user();
+
+        // Check if current password matches
+        if (!Hash::check($request->current_password, $user->password)) {
+            throw ValidationException::withMessages([
+                'current_password' => ['The provided current password does not match our records.'],
+            ]);
+        }
+
+        // Update the password
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json([
+            'message' => 'Password changed successfully.'
         ]);
     }
 }

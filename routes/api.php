@@ -16,6 +16,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Auth routes
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/profile', [AuthController::class, 'profile']);
+    Route::post('/change-password', [AuthController::class, 'changePassword']); // Add this line
     
     // Alumni routes
     Route::apiResource('alumni', AlumniController::class);
