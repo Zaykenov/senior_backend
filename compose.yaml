@@ -36,7 +36,6 @@ services:
       - app-network
 
   nginx:
-    nginx:
     image: nginx:alpine
     container_name: alumni-nginx
     restart: unless-stopped
