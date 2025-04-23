@@ -76,7 +76,7 @@ class RolesAndPermissionsSeeder extends Seeder
         // Alumni
         $alumni = Role::create(['name' => 'alumni']);
         $alumni->givePermissionTo([
-            'alumni:list', 'alumni:view',
+            'alumni:list', 'alumni:view', 'alumni:edit'
         ]);
     }
 }
