@@ -30,7 +30,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('dashboard') }}">{{ __('Chat') }}</a>
+                            </li>
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -76,5 +80,9 @@
             @yield('content')
         </main>
     </div>
+    
+    <!-- Additional Scripts -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    @yield('scripts')
 </body>
 </html>
