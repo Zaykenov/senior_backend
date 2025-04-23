@@ -15,7 +15,7 @@ class UpdateAlumniRequest extends FormRequest
 
     public function rules()
     {
-        $alumniId = $this->route('alumni'); // Get the alumni ID from the route parameter
+        $alumniId = $this->route('id');
 
         return [
             'first_name' => 'sometimes|required|string|max:255',

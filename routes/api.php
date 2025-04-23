@@ -18,8 +18,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::post('/change-password', [AuthController::class, 'changePassword']); // Add this line
     
-    // Alumni routes
-    Route::apiResource('alumni', AlumniController::class);
+    // Alumni routes - explicit definition with {id} parameter
+    Route::get('/alumni', [AlumniController::class, 'index'])->name('alumni.index');
+    Route::post('/alumni', [AlumniController::class, 'store'])->name('alumni.store');
+    Route::get('/alumni/{id}', [AlumniController::class, 'show'])->name('alumni.show');
+    Route::put('/alumni/{id}', [AlumniController::class, 'update'])->name('alumni.update');
+    Route::delete('/alumni/{id}', [AlumniController::class, 'destroy'])->name('alumni.destroy');
     
     // User management routes (admin only)
     Route::apiResource('users', UserController::class);
