@@ -44,15 +44,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('can:create,App\Models\Event')->group(function () {
         Route::get('/admin/events', [EventController::class, 'index']);
         Route::post('/events', [EventController::class, 'store']);
-        Route::put('/events/{event}', [EventController::class, 'update']);
-        Route::delete('/events/{event}', [EventController::class, 'destroy']);
-        Route::get('/events/{event}/attendees', [EventController::class, 'attendees']);
+        Route::put('/events/{id}', [EventController::class, 'update']);
+        Route::delete('/events/{id}', [EventController::class, 'destroy']);
+        Route::get('/events/{id}/attendees', [EventController::class, 'attendees']);
     });
 
     // Alumni routes
     Route::get('/events', [EventController::class, 'index']);
-    Route::get('/events/{event}', [EventController::class, 'show']);
-    Route::post('/events/{event}/register', [EventController::class, 'register']);
-    Route::delete('/events/{event}/register', [EventController::class, 'cancelRegistration']);
+    Route::get('/events/{id}', [EventController::class, 'show']);
+    Route::post('/events/{id}/register', [EventController::class, 'register']);
+    Route::delete('/events/{id}/register', [EventController::class, 'cancelRegistration']);
     Route::get('/my-events', [EventController::class, 'myEvents']);
 });

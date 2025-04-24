@@ -56,8 +56,9 @@ class EventController extends Controller
     /**
      * Display the specified event.
      */
-    public function show(Event $event): JsonResponse
+    public function show(int $id): JsonResponse
     {
+        $event = Event::findOrFail($id);
         if (!Auth::user()->is_admin && $event->status !== Event::STATUS_PUBLISHED) {
             abort(404);
         }
@@ -68,8 +69,9 @@ class EventController extends Controller
     /**
      * Update the specified event.
      */
-    public function update(Request $request, Event $event): JsonResponse
+    public function update(Request $request, int $id): JsonResponse
     {
+        $event = Event::findOrFail($id);
         $this->authorize('update', $event);
 
         $validated = $request->validate([
@@ -92,8 +94,9 @@ class EventController extends Controller
     /**
      * Remove the specified event.
      */
-    public function destroy(Event $event): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
+        $event = Event::findOrFail($id);
         $this->authorize('delete', $event);
 
         $event->delete();
@@ -104,8 +107,9 @@ class EventController extends Controller
     /**
      * Display a list of event attendees.
      */
-    public function attendees(Event $event): JsonResponse
+    public function attendees(int $id): JsonResponse
     {
+        $event = Event::findOrFail($id);
         $this->authorize('viewAttendees', $event);
 
         return response()->json($event->attendees()->paginate());
@@ -114,8 +118,9 @@ class EventController extends Controller
     /**
      * Register current user for an event.
      */
-    public function register(Event $event): JsonResponse
+    public function register(int $id): JsonResponse
     {
+        $event = Event::findOrFail($id);
         if ($event->status !== Event::STATUS_PUBLISHED) {
             abort(404);
         }
@@ -142,8 +147,9 @@ class EventController extends Controller
     /**
      * Cancel registration for an event.
      */
-    public function cancelRegistration(Event $event): JsonResponse
+    public function cancelRegistration(int $id): JsonResponse
     {
+        $event = Event::findOrFail($id);
         $user = Auth::user();
         
         if (!$event->attendees()->where('user_id', $user->id)->exists()) {
