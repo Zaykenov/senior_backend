@@ -26,7 +26,7 @@ class EventController extends Controller
             $events->where('status', Event::STATUS_PUBLISHED);
         }
         
-        return response()->json($events->latest()->paginate());
+        return EventResource::collection($events->latest()->paginate());
     }
 
     /**
@@ -50,7 +50,7 @@ class EventController extends Controller
 
         $event = Event::create($validated);
 
-        return response()->json($event, 201);
+        return response()->json(new EventResource($event), 201);
     }
 
     /**
@@ -63,7 +63,7 @@ class EventController extends Controller
             abort(404);
         }
 
-        return response()->json($event);
+        return response()->json(new EventResource($event));
     }
 
     /**
@@ -88,7 +88,7 @@ class EventController extends Controller
 
         $event->update($validated);
 
-        return response()->json($event);
+        return response()->json(new EventResource($event));
     }
 
     /**
@@ -141,7 +141,10 @@ class EventController extends Controller
 
         $event->attendees()->attach($user->id);
 
-        return response()->json(['message' => 'Successfully registered for event']);
+        return response()->json([
+            'message' => 'Successfully registered for event',
+            'event' => new EventResource($event->fresh())
+        ]);
     }
 
     /**
@@ -158,15 +161,18 @@ class EventController extends Controller
 
         $event->attendees()->detach($user->id);
 
-        return response()->json(['message' => 'Successfully cancelled registration']);
+        return response()->json([
+            'message' => 'Successfully cancelled registration',
+            'event' => new EventResource($event->fresh())
+        ]);
     }
 
     /**
      * Get events the current user is registered for.
      */
-    public function myEvents(): JsonResponse
+    public function myEvents(): AnonymousResourceCollection
     {
         $events = Auth::user()->events()->latest()->paginate();
-        return response()->json($events);
+        return EventResource::collection($events);
     }
 }
