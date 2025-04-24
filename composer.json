@@ -10,8 +10,10 @@
         "dedoc/scramble": "^0.12.10",
         "laravel/framework": "^11.31",
         "laravel/horizon": "^5.30",
+        "laravel/reverb": "^1.5",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "laravel/ui": "^4.6",
         "spatie/laravel-permission": "^6.15",
         "spatie/laravel-translatable": "^6.11"
     },

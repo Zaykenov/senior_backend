@@ -68,11 +68,21 @@ class UserController extends Controller
 
     /**
      * Display the specified user.
+     * Allow access without requiring admin role.
+     * Support finding users by either ID or email.
+     * 
+     * @param string|int $idOrEmail The user identifier - can be numeric ID or email address
+     * @return \Illuminate\Http\JsonResponse
      */
-    #[Authorize('permission:users:view')]
-    public function show($id)
+    public function show($idOrEmail)
     {
-        $user = User::findOrFail($id);
+        // Find user by ID or email
+        if (is_numeric($idOrEmail)) {
+            $user = User::findOrFail($idOrEmail);
+        } else {
+            $user = User::where('email', $idOrEmail)->firstOrFail();
+        }
+        
         return response()->json($user->load('roles'));
     }
 
