@@ -5,6 +5,7 @@ use App\Http\Controllers\API\AlumniController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\SystemController;
+use App\Http\Controllers\API\EventController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -38,4 +39,20 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/statistics', [SystemController::class, 'statistics'])
             ->middleware('permission:system:view-logs');
     });
+
+    // Event routes
+    Route::middleware('can:create,App\Models\Event')->group(function () {
+        Route::get('/admin/events', [EventController::class, 'index']);
+        Route::post('/events', [EventController::class, 'store']);
+        Route::put('/events/{event}', [EventController::class, 'update']);
+        Route::delete('/events/{event}', [EventController::class, 'destroy']);
+        Route::get('/events/{event}/attendees', [EventController::class, 'attendees']);
+    });
+
+    // Alumni routes
+    Route::get('/events', [EventController::class, 'index']);
+    Route::get('/events/{event}', [EventController::class, 'show']);
+    Route::post('/events/{event}/register', [EventController::class, 'register']);
+    Route::delete('/events/{event}/register', [EventController::class, 'cancelRegistration']);
+    Route::get('/my-events', [EventController::class, 'myEvents']);
 });
