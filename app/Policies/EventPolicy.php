@@ -21,7 +21,7 @@ class EventPolicy
      */
     public function view(User $user, Event $event): bool
     {
-        return $user->is_admin || $event->status === Event::STATUS_PUBLISHED;
+        return $user->isAdmin() || $user->hasRole('super-admin') || $event->status === Event::STATUS_PUBLISHED;
     }
 
     /**
@@ -29,7 +29,7 @@ class EventPolicy
      */
     public function create(User $user): bool
     {
-        return $user->is_admin;
+        return $user->isAdmin() || $user->hasRole('super-admin');
     }
 
     /**
@@ -37,7 +37,7 @@ class EventPolicy
      */
     public function update(User $user, Event $event): bool
     {
-        return $user->is_admin;
+        return $user->isAdmin() || $user->hasRole('super-admin');
     }
 
     /**
@@ -45,7 +45,7 @@ class EventPolicy
      */
     public function delete(User $user, Event $event): bool
     {
-        return $user->is_admin;
+        return $user->isAdmin() || $user->hasRole('super-admin');
     }
 
     /**
@@ -69,6 +69,6 @@ class EventPolicy
      */
     public function viewAttendees(User $user, Event $event): bool
     {
-        return $user->is_admin;
+        return $user->isAdmin() || $user->hasRole('super-admin');
     }
 }
