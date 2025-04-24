@@ -5,6 +5,7 @@ use App\Http\Controllers\API\AlumniController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\SystemController;
+use App\Http\Controllers\API\EventController;
 use Illuminate\Support\Facades\Route;
 use App\Events\MessageSent;
 use App\Models\Message;
@@ -23,11 +24,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::post('/change-password', [AuthController::class, 'changePassword']);
     
-    // Alumni routes
-    Route::apiResource('alumni', AlumniController::class);
-    
-    // User management routes (admin only)
-    Route::apiResource('users', UserController::class);
+    // Alumni routes - explicit definition with {id} parameter
+    Route::get('/alumni', [AlumniController::class, 'index'])->name('alumni.index');
+    Route::post('/alumni', [AlumniController::class, 'store'])->name('alumni.store');
+    Route::get('/alumni/{id}', [AlumniController::class, 'show'])->name('alumni.show');
+    Route::put('/alumni/{id}', [AlumniController::class, 'update'])->name('alumni.update');
+    Route::delete('/alumni/{id}', [AlumniController::class, 'destroy'])->name('alumni.destroy');
     
     // Role management routes (admin only)
     Route::apiResource('roles', RoleController::class);
@@ -39,6 +41,22 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/statistics', [SystemController::class, 'statistics'])
             ->middleware('permission:system:view-logs');
     });
+  
+    // Event routes
+    Route::middleware('can:create,App\Models\Event')->group(function () {
+        Route::get('/admin/events', [EventController::class, 'index']);
+        Route::post('/events', [EventController::class, 'store']);
+        Route::put('/events/{id}', [EventController::class, 'update']);
+        Route::delete('/events/{id}', [EventController::class, 'destroy']);
+        Route::get('/events/{id}/attendees', [EventController::class, 'attendees']);
+    });
+
+    // Alumni routes
+    Route::get('/events', [EventController::class, 'index']);
+    Route::get('/events/{id}', [EventController::class, 'show']);
+    Route::post('/events/{id}/register', [EventController::class, 'register']);
+    Route::delete('/events/{id}/register', [EventController::class, 'cancelRegistration']);
+    Route::get('/my-events', [EventController::class, 'myEvents']);
 
     // Broadcasting authentication route
     Broadcast::routes(['middleware' => ['auth:sanctum']]); // Add this line
@@ -90,7 +108,4 @@ Route::middleware('auth:sanctum')->group(function () {
         return $message;
     });
 
-}); // End of auth:sanctum group
-
-// Remove the duplicate chat routes outside the auth:sanctum group if they exist
-// ... (ensure no duplicate /user, /users, /messages/{user} routes are defined outside the middleware group)
+});

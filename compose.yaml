@@ -41,12 +41,15 @@ services:
     image: nginx:alpine
     container_name: alumni-nginx
     restart: unless-stopped
-    tty: true
     ports:
       - "80:80"
+      - "443:443"
     volumes:
-      - ./:/var/www
+      - ./:/var/www                        # Laravel + static
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - ../senior_front/dist/:/var/www/frontend:ro   # <-- React static files
+      - /etc/letsencrypt:/etc/letsencrypt:ro     # <-- host certs
+      - /var/lib/letsencrypt:/var/lib/letsencrypt:ro
     networks:
       - app-network
 

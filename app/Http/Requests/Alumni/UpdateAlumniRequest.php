@@ -4,6 +4,7 @@ namespace App\Http\Requests\Alumni;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Models\Alumni;
 
 class UpdateAlumniRequest extends FormRequest
 {
@@ -14,6 +15,8 @@ class UpdateAlumniRequest extends FormRequest
 
     public function rules()
     {
+        $alumniId = $this->route('id');
+
         return [
             'first_name' => 'sometimes|required|string|max:255',
             'last_name' => 'sometimes|required|string|max:255',
@@ -25,7 +28,7 @@ class UpdateAlumniRequest extends FormRequest
                 'sometimes',
                 'required',
                 'email',
-                Rule::unique('alumni', 'email')->ignore($this->alumni)
+                Rule::unique('alumni', 'email')->ignore($alumniId)
             ],
             'phone' => 'sometimes|nullable|string|max:20',
             'current_job' => 'sometimes|nullable|string|max:255',

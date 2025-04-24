@@ -37,12 +37,6 @@ class Alumni extends Model
         'social_links' => 'array',
     ];
 
-    // Fields that should be translatable
-    public $translatable = [
-        'biography',
-        'current_job',
-    ];
-
     // Full name accessor
     public function getFullNameAttribute()
     {
