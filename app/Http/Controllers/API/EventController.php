@@ -19,7 +19,7 @@ class EventController extends Controller
     /**
      * Display a listing of the events.
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): AnonymousResourceCollection
     {
         $events = Event::query();
         
